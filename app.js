@@ -32,7 +32,7 @@ const TestMode = !process.argv[2]
 /** define variable */
 // const port = 6500;
 const app = express();
-const port = process.env.port;
+const port = process.env.AGENT_SERVER_PORT;
 require('dotenv').config();
 
 //server favicon
@@ -44,6 +44,9 @@ app.use('/',indexRouter);
 app.use('/send',sendRouter);
 app.use('/recv',recvRouter);
 app.use('/outbound',outboundRouter);
+
+
+
 /** ex: Internal Error 4xx Middleware  */
 app.use((req,res,next)=>{
     console.log('Internal Server Error 4xx');
