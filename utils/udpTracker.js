@@ -175,7 +175,7 @@ function RUN(options,callback){
     subprocess.on('exit',function(code,signal){
       if(code){
         console.log('sub Process terminated with code ',code);
-	throw new Error('Please Check your Permission UDP Test is get root authority');
+	      throw new Error('Please Check your Permission UDP Test is get root authority');
       }
       else if(signal){
         console.log('sub Process terminated because of signal ',signal);

@@ -17,7 +17,7 @@ const indexRouter = require('./routes/index');
 const sendRouter = require('./routes/send');
 const recvRouter = require('./routes/recv');
 const outboundRouter = require('./routes/outbound');
-
+const managementRouter = require('./routes/management');
 
 /* Import tqm Tracker */
 
@@ -44,6 +44,7 @@ app.use('/',indexRouter);
 app.use('/send',sendRouter);
 app.use('/recv',recvRouter);
 app.use('/outbound',outboundRouter);
+app.use('/management',managementRouter);
 
 
 

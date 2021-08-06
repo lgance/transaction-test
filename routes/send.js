@@ -26,7 +26,7 @@ router.get('/',(req,res,next)=>{
     let sendUrl = `http://${srcIP}:${port}/recv?checkIP=${checkIP}`;
  
     if(targetPort && targetPort!=="6500"){
-	sendUrl = `http://${srcIP}:${targetPort}`;
+			sendUrl = `http://${srcIP}:${targetPort}`;
     }
 
 
