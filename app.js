@@ -65,7 +65,6 @@ app.listen(port,()=>{
 /** Express Server Error Handling Middle ware */
 app.use((err,req,res,next)=>{
     console.log('Internal Server Error');
-    console.error(err);
     const statusCode = 500;
     res.status(statusCode).send(err.message);
 });

@@ -25,22 +25,40 @@ router.get('/',(req,res,next)=>{
 router.get('/object_storage',async(req,res,next)=>{
   try {
     const { object_storage_link } = req.query;
+    let _response = {};
+
     const getRootPath = await FileTracker.getRootPath();
+    const storageFileName = object_storage_link.length !==0 ?
+          object_storage_link.split('/')[object_storage_link.split('/').length-1] :
+          false;
+
     console.log(req.ip);
 
-
-    let tempURL = 'https://kr.object.gov-ncloudstorage.com/transaction-test-object/transaction_excel_img.png';
-    console.log(`${getRootPath} Root Path `);
-    console.log(object_storage_link);
-
-
     const objectStoragePath = getRootPath + '/ObjectStorage';
+    let objectStorageDownloadActionResult  = await FileTracker.fileDownload(objectStoragePath,object_storage_link);
+    let objectStorageDownloadFileExistResult ;
+    let objectStorageDownloadFileCleanUpResult ;
 
-    await FileTracker.fileDownload(objectStoragePath,object_storage_link);
+    let responseMessage = '';
+    let testResult = 'fail';
+    let desc =`${object_storage_link} 로 부터 NCP 내부 VM 으로 파일 다운로드 `;
 
-    res.send('objectstorage');
+
+    if(objectStorageDownloadActionResult){
+	objectStorageDownloadFileExistResult = await FileTracker.existFile(objectStoragePath,storageFileName);
+	objectStorageDownloadFileCleanUpResult = await FileTracker.cleanFolder(objectStoragePath);
+    } 
+    if(objectStorageDownloadActionResult && objectStorageDownloadFileExistResult ){
+      testResult = 'pass';
+    }
+    	
+    _response.desc = desc + `[결과] :  ${testResult}`;
+    _response.result = testResult;
+    _response.responseMessage = responseMessage;
+  
+    res.send(_response);
   } catch (error) {
-    next(error);
+    next(error) 
   }
 });
 
@@ -70,7 +88,10 @@ router.get('/nas',(req,res,next)=>{
 // System Security Checker
 router.get('/system_security_checker',(req,res,next)=>{
   try {
+    const { platform } = req.query;
+
     
+	    
 
     res.send('systemsecuritychecker');
   } catch (error) {
