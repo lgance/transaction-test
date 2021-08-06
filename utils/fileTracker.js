@@ -94,11 +94,12 @@ Tracker.cleanFolder = function(path){
 
 	/* Validation true and Clean Folder Action */
 	if(isValidate){
-	  console.log(`Folder Clean ${path} `);
+	  console.log(`[ FOLDER CLEAN UP ${path} ] `);
 	  let { stdout, stderr } = await exec(_command,_execOptions);
 
 	    console.log(`stdout: ${stdout}`);
 	    console.error(`stderr: ${stderr}`); 
+          console.log(`[ FOLDER CLEAN UP ${path} Complete ] `);
 	    resolve(true);
 	}
 	/* Validation false and Cleaen Folder Action Reject */
