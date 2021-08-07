@@ -20,8 +20,22 @@ router.get('/',(req,res,next)=>{
     const {srcIP,dstIP,targetPort,checkIP} = req.query;
     console.log('sendRouter');    
     console.log(req.query);
-  
-    var { condition } = req.query;
+
+
+    /* Legacy Code Defence */
+    /* New Feature  A Agent -> B Agent */  
+    /* Command Server -> http://A Agent:port/recv?dstIP=B Agent Server */
+    /* Command Example 
+ 
+       Before > http://${sendServer}:${SERVER_AGENT_PORT}/send?srcIP=${recvServer}
+       
+       After  > http://${sendServer}:${SERVER_AGENT_PORT}/send?dstIP=${recvServer} 
+
+     */
+    if(typeof srcIP==="undefined"){
+       srcIP = dstIP;
+    }
+    let { condition } = req.query;
  
     let sendUrl = `http://${srcIP}:${port}/recv?checkIP=${checkIP}`;
  
@@ -96,10 +110,14 @@ router.get('/',(req,res,next)=>{
 
 router.get('/udp/sendOnly',async (req,res,next)=>{
 	try{
-	  const { srcIP,targetPort } = req.query;
+	  const { srcIP,dstIP,targetPort } = req.query;
 	  console.log('udpSend Only Router ');
 	  console.log(req.query);
 
+	  /* Legacy Defence Code */
+          if(typeof srcIP==="undefined"){
+    	     srcIP = dstIP;
+          }
 	  let sendUrl = `http://${srcIP}:${port}/recv/udp`;
 	  var { condition } = req.query;
 	  
@@ -117,45 +135,44 @@ router.get('/udp/sendOnly',async (req,res,next)=>{
 		return new Promise((resolve,reject)=>{
 		  let client = dgram.createSocket('udp4');
 		  client.send(msg,0,msg.length,port,target,(err,bytes)=>{
-				if(err){console.log(`Error : ${msg} UDP Fail`); console.log(err);reject(false);}
-				console.log(`[2] UDP Send Complete targetServer: ${target}`);
-				client.close();
-				resolve(true);
+		      if(err){console.log(`Error : ${msg} UDP Fail`); console.log(err);reject(false);}
+		      console.log(`[2] UDP Send Complete targetServer: ${target}`);
+		      client.close();
+		      resolve(true);
 		  });
 		});
 		}
 
-		/** After Deprecated Function */
-		const udpSendFnRefact = (msg,port,target,flag)=>{
-			return new Promise((resolve,reject)=>{
-				let client = dgram.createSocket('udp4');
-				client.send(msg,0,msg.length,port,target,(err,bytes)=>{
-					if(err){console.log(`Error : ${msg} UDP Fail`); console.log(err);reject(false);}
-					flag===true? '' : console.log(`[S] UDP Send Complete targetServer : ${target}`);
-					client.close();
-					resolve(true);
-				})
-			});
-		}
-		const keepSendUdp = async (timeout)=>{
-			return new Promise((resolve,reject)=>{
-				let udpMessage = Buffer.from('KEEP_UDP_SEND');
-				let fnDateTime = new Date().getTime();
-				let timeCondition = 0;
-				let callCnt = 0 ;
-				while(timeCondition < 1 ){
-
-					let currTime = new Date().getTime() - fnDateTime;
-					timeCondition = Math.floor(currTime/timeout);
-					/** UDP Send Throttle */
-					if((currTime%300)===0){
-						udpSendFnRefact(udpMessage,port,srcIP);
-						callCnt++;
-					}
+   	  /** After Deprecated Function */
+	  const udpSendFnRefact = (msg,port,target,flag)=>{
+	      return new Promise((resolve,reject)=>{
+	  	let client = dgram.createSocket('udp4');
+		  client.send(msg,0,msg.length,port,target,(err,bytes)=>{
+	  	   if(err){console.log(`Error : ${msg} UDP Fail`); console.log(err);reject(false);}
+		   flag===true? '' : console.log(`[S] UDP Send Complete targetServer : ${target}`);
+		   client.close();
+		   resolve(true);
+		 })
+	      });
+	  }
+	  const keepSendUdp = async (timeout)=>{
+	     return new Promise((resolve,reject)=>{
+	 	let udpMessage = Buffer.from('KEEP_UDP_SEND');
+	        let fnDateTime = new Date().getTime();
+		let timeCondition = 0;
+		let callCnt = 0 ;
+			while(timeCondition < 1 ){
+ 				let currTime = new Date().getTime() - fnDateTime;
+				timeCondition = Math.floor(currTime/timeout);
+				/** UDP Send Throttle */
+				if((currTime%300)===0){
+	 			  udpSendFnRefact(udpMessage,port,srcIP);
+				  callCnt++;
 				}
-				resolve(`Send Count ${callCnt}`);
-			});
-		}
+  			}
+		resolve(`Send Count ${callCnt}`);
+		});
+	  }
 	  let udpResult = await udpSendFn(udpMessage,port,srcIP);  
 
 		if(!udpResult){

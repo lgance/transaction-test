@@ -99,12 +99,14 @@ router.get('/system_security_checker',async(req,res,next)=>{
     let testSSC= '';
     if(typeof platform ==='undefined'){
 	res.send('platform is not undefined');
+	return;
     }
     else if(platform.toLowerCase()==='gov'){ testSSC = govSSC; }
     else if(platform.toLowerCase()==='pub'){ testSSC = pubSSC; }
     else if(platform.toLowerCase()==='fin'){ testSSC = finSSC; }
     else{
 	res.send('not includes platform '+ platform);	
+	return;
     }
 
    
