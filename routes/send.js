@@ -12,12 +12,12 @@ const dgram = require('dgram');
 require('dotenv').config();
 
 const port = process.env.port;
-const timeOut = process.env.timeout;
+const timeOut = parseInt(process.env.timeout);
 // 테스트 결과 서버로 전송 
 router.get('/',(req,res,next)=>{
     try {
     
-    const {srcIP,dstIP,targetPort,checkIP} = req.query;
+    let {srcIP,dstIP,targetPort,checkIP,condition} = req.query;
     console.log('sendRouter');    
     console.log(req.query);
 
@@ -35,8 +35,6 @@ router.get('/',(req,res,next)=>{
     if(typeof srcIP==="undefined"){
        srcIP = dstIP;
     }
-    let { condition } = req.query;
- 
     let sendUrl = `http://${srcIP}:${port}/recv?checkIP=${checkIP}`;
  
     if(targetPort && targetPort!=="6500"){

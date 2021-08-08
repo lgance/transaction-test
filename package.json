@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.4",
-    "pm2": "^2.10.4"
+    "pm2": "^5.1.0",
+    "shelljs": "^0.8.4"
   }
 }

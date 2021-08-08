@@ -25,7 +25,7 @@ router.get('/',(req,res,next)=>{
 	/* expected ip fail or not IP Address   */   
        else{
 	const checklog = `[Check IP ] IP Validation Error [${checkIP}] expected IP {${ip}]`;
-	console.log(checkLog);
+	console.log(checklog);
 	res.status(400).send(checklog);
        }
     }
@@ -113,7 +113,7 @@ router.get('/udp',async(req,res,next)=>{
 
 
 const getIP = (req)=>{
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   if (ip.substr(0, 7) == "::ffff:") { ip = ip.substr(7);}
   return ip;
 }
