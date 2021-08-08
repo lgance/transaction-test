@@ -5,7 +5,8 @@ const path = require('path');
 const fs = require('fs');
 
 const moment = require('moment');
-const Tracker = require('../utils/tcpTracker');
+//const Tracker = require('../utils/tcpTracker');
+const UDPTracker = require('../utils/udpTracker');
 const filePath = path.resolve(__dirname,'../log');
 
 // recv Router 
@@ -89,17 +90,55 @@ router.get('/check',(req,res,next)=>{
 	  next(error);
 	}
 });
-  
-// udp 
+
+
+// udp Status READY
+router.get('/udp/ready',async(req,res,next)=>{
+  try{
+    /* UDP TCPDump Ready */
+    console.log('[STATUS] UDP READY ');
+    let udpSubProcess =  await UDPTracker.udpReady();
+    console.log('PID');
+    console.log(udpSubProcess);
+    res.send(udpSubProcess);
+  }
+  catch(err){
+    console.log(err);
+    res.send(err);		
+  }
+});
+
+/* New UDP Packet Check  */
+router.get('/udp/packet',async(req,res,next)=>{
+  try{
+    console.log('UDP Packet Check ');
+    let desc = 'UDP Packet CHECK ';
+    let udpClose = await UDPTracker.udpBufferClose();
+    	
+    if(!udpClose) desc = 'UDP Process is not Exist' ;
+    let udpObj = {};
+    let udpState = UDPTracker.getState('udp');
+    udpObj.state = udpState;
+    udpObj.desc = desc;
+    
+    res.send(udpObj);
+  }
+  catch(err){
+    console.log(err);  
+    res.send(err);
+  }
+});
+
+/* udp Packet Status Legacy */
 router.get('/udp',async(req,res,next)=>{
 	try{
     console.log('udp recvRouter');
     const { srcIP ,dstIP }  = req.query;
-    const packetString = await Tracker.getPacket();
+    const packetString = await UDPTracker.getPacket();
     console.log(packetString);
 
     let udpObj = {};
-    let udpState = Tracker.getState('udp');
+    let udpState = UDPTracker.getState('udp');
     udpObj.state = udpState;
     udpObj.desc = 'UDP Check ';
 
@@ -128,7 +167,7 @@ const validationIP = (checkIP)=>{
 	return false;
 }
 const existParam = (param)=>{
-  if(param ==="undefined"){return false; }
+  if(param ==="undefined" || param===undefined){return false; }
   else if(typeof param==="undefined" && typeof param===undefined){ return false;    }
   else if(param===null){return false;}
   else{ return true;  }

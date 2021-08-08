@@ -108,7 +108,7 @@ router.get('/',(req,res,next)=>{
 
 router.get('/udp/sendOnly',async (req,res,next)=>{
 	try{
-	  const { srcIP,dstIP,targetPort } = req.query;
+	  let { srcIP,dstIP,targetPort } = req.query;
 	  console.log('udpSend Only Router ');
 	  console.log(req.query);
 
@@ -200,14 +200,18 @@ router.get('/udp/sendOnly',async (req,res,next)=>{
 });
 router.get('/udp',(req,res,next)=>{
 	try{
-	  const { srcIP,dstIP,targetPort } = req.query;
+	  let { srcIP,dstIP,targetPort,condition } = req.query;
 
 	  const message='UDP Message';
 	  console.log('udpRouter Send to ',srcIP);
 	  console.log(req.query);
-	  
+	 
+	  /* Legacy Code */
+   	  if(typeof srcIP==="undefined" || srcIP===undefined){
+		srcIP=dstIP;
+	  }
+ 
 	  let sendUrl = `http://${srcIP}:${port}/recv/udp`;
-	  var { condition } = req.query;
 
 	  if(targetPort && targetPort!=="6500"){
 		sendUrl = `http://${srcIP}:${targetPort}`;
