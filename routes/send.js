@@ -180,7 +180,12 @@ router.get('/udp/sendOnly',async (req,res,next)=>{
 			 let keepUDPResult = await keepSendUdp(1000);
 			 console.log(keepUDPResult);
 		};
-		
+          /* UDP Send Long Polling */		
+   	  const udpLongPolling = ()=>{
+	   return new Promise((resolve)=>{
+	      setTimeout(()=>{resolve(true)},3000);
+	   });
+	  }
 	  let _response = {};
 	  _response.data = udpResult;
 	  _response.msg ="UDP 트래픽만 전송 [성공]";
