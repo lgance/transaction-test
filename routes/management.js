@@ -24,7 +24,7 @@ router.get('/',(req,res,next)=>{
 // Object Storage 
 router.get('/object_storage',async(req,res,next)=>{
   try {
-    const { object_storage_link } = req.query;
+    const { object_storage_link,condition } = req.query;
     let _response = {};
 
     const getRootPath = await FileTracker.getRootPath();
@@ -35,16 +35,15 @@ router.get('/object_storage',async(req,res,next)=>{
     console.log(req.ip);
 
     const objectStoragePath = getRootPath + '/ObjectStorage';
-    let objectStorageDownloadActionResult  = await FileTracker.fileDownload(objectStoragePath,object_storage_link);
+    let objectStorageDownloadActionResult  = await FileTracker.fileDownload(objectStoragePath,object_storage_link,condition);
     let objectStorageDownloadFileExistResult ;
     let objectStorageDownloadFileCleanUpResult ;
 
-    let responseMessage = '';
     let testResult = 'fail';
     let desc =`${object_storage_link} 로 부터 NCP 내부 VM 으로 파일 다운로드 `;
 
 
-    if(objectStorageDownloadActionResult){
+    if(objectStorageDownloadActionResult.result===true){
 	objectStorageDownloadFileExistResult = await FileTracker.existFile(objectStoragePath,storageFileName);
 	objectStorageDownloadFileCleanUpResult = await FileTracker.cleanFolder(objectStoragePath);
     } 
@@ -54,11 +53,19 @@ router.get('/object_storage',async(req,res,next)=>{
     	
     _response.desc = desc + `[결과] :  ${testResult}`;
     _response.result = testResult;
-    _response.responseMessage = responseMessage;
+    _response.responseMessage = objectStorageDownloadActionResult.stderr; 
   
     res.send(_response);
   } catch (error) {
-    next(error) 
+     if(error.condition==="false"){
+      console.log(error);
+      res.send({
+           desc:`${error.objectlink} 로 부터 NCP 내부 VM 으로 파일 다운로드 불가 테스트 ( 403 Forbidden ) [결과] : Pass`,
+           result:"pass",
+           responseMessage : error.originError.stderr
+        });
+     }
+     next(error)
   }
 });
 

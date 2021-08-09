@@ -42,10 +42,26 @@ Tracker.fileDownload = function(path,url){
        console.log(`stdout: ${stdout}   ${stdout.length}`);
        console.error(`stderr: ${stderr}`);
 
-       resolve(true);
+       resolve({
+	result:true,
+	stderr:stderr
+       });
     } catch (error) {
       this.log(error,'[ERROR] FIle Download');
-      reject(error);
+      
+      if(condition==="false"){
+	console.log('ERROR PROPERTY ADDED');
+	
+	let errorObj = {};
+	errorObj.originError = error;
+	errorObj.condition = condition;
+	errorObj.objectlink = url;
+	
+	reject(errorObj);
+      } 
+      else{
+        reject(error);
+      }
     }
   })
 }
