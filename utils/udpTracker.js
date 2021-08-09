@@ -76,7 +76,6 @@ Tracker.udpReady = function(){
 Tracker.udpBufferClose = function(){
  return new Promise(async(resolve,reject)=>{
    try{
-	console.log(this.process);
      if(this.process && this.status.udp===1){
 	this.process.kill('SIGHUP');
 	console.log('State');

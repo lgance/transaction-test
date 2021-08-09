@@ -95,12 +95,22 @@ router.get('/check',(req,res,next)=>{
 // udp Status READY
 router.get('/udp/ready',async(req,res,next)=>{
   try{
-    /* UDP TCPDump Ready */
-    console.log('[STATUS] UDP READY ');
-    let udpSubProcess =  await UDPTracker.udpReady();
-    console.log('PID');
-    console.log(udpSubProcess);
-    res.send(udpSubProcess);
+    /* RUNNING UDP CHECK */
+    let udpState = await UDPTracker.getState('udp');
+    console.log('UDP STATE');
+    console.log(udpState);
+    if(!!udpState){
+	console.log('UDP is get PACKET');
+	res.send('RUNNING');
+    } 
+    else{
+    	/* UDP TCPDump Ready */
+	console.log('[STATUS] UDP READY ');
+	let udpSubProcess =  await UDPTracker.udpReady();
+	console.log('PID');
+	let udpState = udpSubProcess === true ? 'READY'  : 'ERROR';
+	res.send(udpState);	
+    }
   }
   catch(err){
     console.log(err);
@@ -113,10 +123,11 @@ router.get('/udp/packet',async(req,res,next)=>{
   try{
     console.log('UDP Packet Check ');
     let desc = 'UDP Packet CHECK ';
+    let udpObj = {};
+  
     let udpClose = await UDPTracker.udpBufferClose();
     	
     if(!udpClose) desc = 'UDP Process is not Exist' ;
-    let udpObj = {};
     let udpState = UDPTracker.getState('udp');
     udpObj.state = udpState;
     udpObj.desc = desc;
