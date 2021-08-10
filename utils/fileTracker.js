@@ -55,7 +55,6 @@ Tracker.fileDownload = function(path,url,condition){
                 console.log(execResult);
                 if(!execResult){
                   console.log(`File Download Timeout ${_timeout}ms`);
-                  resolve(false);
 		  resolve({
 		   result:false
 		  });
