@@ -25,7 +25,7 @@ Tracker.getRootPath = function(){
   })
 }
 
-Tracker.fileDownload = function(path,url,timeout){
+Tracker.fileDownload = function(path,url){
   return new Promise(async(resolve,reject)=>{
     try {
       /* Delete Error Defence   */
@@ -34,7 +34,7 @@ Tracker.fileDownload = function(path,url,timeout){
 	throw new Error('File Delete ERROR [ Check FileTracker clean Folder Function ] FILE LIMIT is 10 ');
       }
      
-      let _timeout = timeout || 3000;
+      let _timeout = 3000;
      
       let _command = `wget ${url}`;
       let _execOptions= {

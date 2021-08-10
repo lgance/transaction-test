@@ -186,6 +186,9 @@ router.get('/udp/sendOnly',async (req,res,next)=>{
 	      setTimeout(()=>{resolve(true)},3000);
 	   });
 	  }
+	  /* Wait UDP Send */   
+          await udpLongPolling();
+	
 	  let _response = {};
 	  _response.data = udpResult;
 	  _response.msg ="UDP 트래픽만 전송 [성공]";
