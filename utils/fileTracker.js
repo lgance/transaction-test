@@ -25,7 +25,7 @@ Tracker.getRootPath = function(){
   })
 }
 
-Tracker.fileDownload = function(path,url){
+Tracker.fileDownload = function(path,url,condition){
   return new Promise(async(resolve,reject)=>{
     try {
       /* Delete Error Defence   */
