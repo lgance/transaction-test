@@ -25,7 +25,7 @@ Tracker.getRootPath = function(){
   })
 }
 
-Tracker.fileDownload = function(path,url){
+Tracker.fileDownload = function(path,url,timeout){
   return new Promise(async(resolve,reject)=>{
     try {
       /* Delete Error Defence   */
@@ -33,19 +33,52 @@ Tracker.fileDownload = function(path,url){
       if(files.length>=10){
 	throw new Error('File Delete ERROR [ Check FileTracker clean Folder Function ] FILE LIMIT is 10 ');
       }
+     
+      let _timeout = timeout || 3000;
+     
       let _command = `wget ${url}`;
       let _execOptions= {
 	cwd:path	
       }
-      let { stdout, stderr }  = await exec(_command,_execOptions);
+      // exec 성공 실패 상태 
+      let execResult = false;
 
+
+      /* exec가 만약에 성공하지 못했을 경우 계속 TCP 리다이렉트로인한
+         계속 요청으로 인해서 Agent는 Timeout을 맞게 됩니다. 하지만 오류가
+         Agent의 ReFused 오류가 나기때문에 정확한 오류전달을 위해
+         File Tracker에서 적정시간내에 파일을 다운하지 못할 경우 ( timeout 시간 )
+         해당 task queue에서 resolve로 나올수 있도록 합니다.*/
+
+        setTimeout(()=>{
+                console.log('FileDownload Failed Check Worker');
+                console.log(execResult);
+                if(!execResult){
+                  console.log(`File Download Timeout ${_timeout}ms`);
+                  resolve(false);
+		  resolve({
+		   result:false
+		  });
+                }
+                else{
+		  console.log('File Download Safe SUCCESS');
+     		  resolve({
+	   	   result:true,
+ 		   stderr:stderr
+	          });
+                }
+        },_timeout);
+
+
+
+      let { stdout, stderr }  = await exec(_command,_execOptions);
+       execResult = true;
        console.log(`stdout: ${stdout}   ${stdout.length}`);
        console.error(`stderr: ${stderr}`);
 
-       resolve({
-	result:true,
-	stderr:stderr
-       });
+
+
+
     } catch (error) {
       this.log(error,'[ERROR] FIle Download');
       
