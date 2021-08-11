@@ -123,6 +123,7 @@ Tracker.udpDumpStart = function(options,callback){
 	          console.log('UDP Packet Recv');
 	          console.log(packet);
 	          _this.setState('udp');
+		  _this.udpBufferClose();
 	        }
 	        else{
 	          console.log('UDP Packet Not Recv');

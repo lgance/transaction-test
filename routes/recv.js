@@ -114,7 +114,9 @@ router.get('/udp/ready',async(req,res,next)=>{
   }
   catch(err){
     console.log(err);
-    res.send(err);		
+	//    res.send(err);		
+     res.send('ERROR');
+
   }
 });
 

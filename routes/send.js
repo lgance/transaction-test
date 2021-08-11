@@ -177,13 +177,13 @@ router.get('/udp/sendOnly',async (req,res,next)=>{
 			res.send({msg:'UDP Send Fail',result:'fail'})
 		}
 		else{
-			 let keepUDPResult = await keepSendUdp(1000);
+			 let keepUDPResult = await keepSendUdp(500);
 			 console.log(keepUDPResult);
 		};
           /* UDP Send Long Polling */		
    	  const udpLongPolling = ()=>{
 	   return new Promise((resolve)=>{
-	      setTimeout(()=>{resolve(true)},3000);
+	      setTimeout(()=>{resolve(true)},2000);
 	   });
 	  }
 	  /* Wait UDP Send */   
