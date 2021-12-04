@@ -95,28 +95,47 @@ router.get('/check',(req,res,next)=>{
 // udp Status READY
 router.get('/udp/ready',async(req,res,next)=>{
   try{
+    let { nic } = req.query;
+   
     /* RUNNING UDP CHECK */
     let udpState = await UDPTracker.getState('udp');
     console.log('UDP STATE');
     console.log(udpState);
     if(!!udpState){
-	console.log('UDP is get PACKET');
-	res.send('RUNNING');
+	if(typeof nic==="undefined"){
+	   console.log('Connect Test UDP is get PACKET');
+	   res.send('SUCCESS');
+	}
+	else{
+	   console.log('NIC UDP CHECK STATE RUNNING');
+	   res.send('RUNNING');
     } 
     else{
     	/* UDP TCPDump Ready */
 	console.log('[STATUS] UDP READY ');
-	let udpSubProcess =  await UDPTracker.udpReady();
+	let udpSubProcess;
+
+	if(typeof nic==="undefined"){
+	  udpSubProcess = await UDPTracker.udpReady();
+        }
+	else{
+	  udpSubProcess = await UDPTracker.udpReady({networkInterface:nic});
+   	}
 	console.log('PID');
-	let udpState = udpSubProcess === true ? 'READY'  : 'ERROR';
+	let udpState = udpSubProcess === true ? 'READY'  : 'RUNNING';
 	res.send(udpState);	
     }
   }
   catch(err){
     console.log(err);
+<<<<<<< HEAD
+   // res.send(err);		
+	res.send('ERROR');
+=======
 	//    res.send(err);		
      res.send('ERROR');
 
+>>>>>>> 2b7f8ca69a0c23580c53fc796a9ef27d5601e272
   }
 });
 

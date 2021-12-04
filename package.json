@@ -14,8 +14,8 @@
     "delete": "pm2 delete 'ServerNode'",
     "log": "pm2 log 'ServerNode'",
     "close": "pm2 stop 'ServerNode' && pm2 delete 'ServerNode'",
-    "flush":"pm2 flush",
-    "show":"pm2 show 'ServerNode'"
+    "flush": "pm2 flush",
+    "show": "pm2 show 'ServerNode'"
   },
   "repository": {
     "type": "git",
