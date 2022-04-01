@@ -98,7 +98,7 @@ Tracker.udpBufferClose = function(){
 Tracker.udpDumpStart = function(options,callback){
   return new Promise(async(resolve,reject)=>{
    try{
-   	console.log('test UDP Dump Start'); 	  	
+  console.log('test UDP Dump Start'); 	  	
 	let _command = 'tcpdump';
 	if(typeof options ==='function'){ callback = options;}
 	let _options = options || {};
@@ -114,7 +114,7 @@ Tracker.udpDumpStart = function(options,callback){
 		_dumpoptions = ['-v','-i',_nic,_protocol,'and','port',_port,'and',_host];
 		 /* tcpdump -v -i eth0 udp and port 6500 and host 10.0.0.1 */
 	}
-  	  let _this = this;
+  	let _this = this;
 	  let subprocess = spawn(_command,_dumpoptions);
 	  subprocess.stdout.on('data',function(data){
 	      let packet = data.toString();
