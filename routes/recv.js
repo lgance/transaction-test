@@ -44,14 +44,13 @@ router.get('/nacl',(req,res,next)=>{
 	  const message="this Router is NACL Test after create File";
 	  console.log(message);
 
-	  createFile();
-	  
-	  setTimeout(()=>{
-		  deleteFile();
-	  },10000);
+	  createFile();	  
+	//   setTimeout(()=>{
+	// 	  deleteFile();
+	//   },10000);
 	  res.send(message);
 	}
-	catch( error ) {
+	catch(error) {
 	  next(error);	
 	}
 });
