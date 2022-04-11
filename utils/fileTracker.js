@@ -55,9 +55,9 @@ Tracker.fileDownload = function(path,url,condition){
                 console.log(execResult);
                 if(!execResult){
                   console.log(`File Download Timeout ${_timeout}ms`);
-		  resolve({
-		   result:false
-		  });
+                  resolve({
+                  result:false
+                  });
                 }
                 else{
 		  console.log('File Download Safe SUCCESS');
@@ -167,7 +167,7 @@ Tracker.pathValidation = function(path){
     try{
 	console.log('Path Validation');
 	let systemPath = ['bin','boot','dev','etc','lib','lib64','opt','proc',
-        'root','run','sbin','srv','sys','tmp','usr','var'];
+        ,'run','sbin','srv','sys','tmp','usr','var'];
 
 	let checkPath = path.split('/').slice(0,3);
 
