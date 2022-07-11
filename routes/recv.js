@@ -42,16 +42,17 @@ router.get('/',(req,res,next)=>{
 router.get('/nacl',(req,res,next)=>{
 	try{
 	  const message="this Router is NACL Test after create File";
-	  console.log(message);
+	  let _res = {}
+	  _res.message=message
+	  _res.result="pass"
 
-	  createFile();
-	  
-	  setTimeout(()=>{
-		  deleteFile();
-	  },10000);
-	  res.send(message);
+	  createFile();	  
+	//   setTimeout(()=>{
+	// 	  deleteFile();
+	//   },10000);
+	  res.send(_res);
 	}
-	catch( error ) {
+	catch(error) {
 	  next(error);	
 	}
 });
