@@ -5,17 +5,17 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "pm2 start app.js --name 'ServerNode'",
-    "nacl": "pm2 start app.js --name 'ServerNode' -- nacl",
-    "udp": "pm2 start app.js --name 'ServerNode' -- udp",
+    "start": "pm2 start app.js --name 'serverNode6500Agent'",
+    "nacl": "pm2 start app.js --name 'serverNode6500Agent' -- nacl",
+    "udp": "pm2 start app.js --name 'serverNode6500Agent' -- udp",
     "list": "pm2 list",
-    "stop": "pm2 stop 'ServerNode'",
-    "restart": "pm2 restart 'ServerNode'",
-    "delete": "pm2 delete 'ServerNode'",
-    "log": "pm2 log 'ServerNode'",
-    "close": "pm2 stop 'ServerNode' && pm2 delete 'ServerNode'",
+    "stop": "pm2 stop 'serverNode6500Agent'",
+    "restart": "pm2 restart 'serverNode6500Agent'",
+    "delete": "pm2 delete 'serverNode6500Agent'",
+    "log": "pm2 log 'serverNode6500Agent'",
+    "close": "pm2 stop 'serverNode6500Agent' && pm2 delete 'serverNode6500Agent'",
     "flush": "pm2 flush",
-    "show": "pm2 show 'ServerNode'"
+    "show": "pm2 show 'serverNode6500Agent'"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "moment": "^2.24.0",
     "multer": "^1.4.2",
     "node-cron": "^2.0.3",
+    "node-netstat": "^1.8.0",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
