@@ -33,7 +33,7 @@ const TestMode = !process.argv[2]
 // const port = 6500;
 const app = express();
 //const port = process.env.AGENT_SERVER_PORT;
-const aport = 6500;
+const port = 6500;
 require('dotenv').config();
 
 //server favicon
