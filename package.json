@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "start app.js",
+    "start": "node app.js",
     "nacl": "pm2 start app.js --name 'serverNode6500Agent' -- nacl",
     "udp": "pm2 start app.js --name 'serverNode6500Agent' -- udp",
     "list": "pm2 list",
