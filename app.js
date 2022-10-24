@@ -30,7 +30,6 @@ const TestMode = !process.argv[2]
     : 'acg');
 
 /** define variable */
-// const port = 6500;
 const app = express();
 //const port = process.env.AGENT_SERVER_PORT;
 const port = 6500;
