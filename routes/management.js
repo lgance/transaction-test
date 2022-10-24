@@ -5,8 +5,8 @@ const os = require('os');
 const FileTracker = require('../utils/fileTracker');
 
 
-const port = process.env.port;
-const timeOut = process.env.timeout;
+const port = 6500;
+const timeOut = 5000;
 
 
 // management Router

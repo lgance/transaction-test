@@ -7,7 +7,7 @@ const TCPTracker = require('../utils/tcpTracker');
 
 require('dotenv').config();
 
-const port = process.env.port;
+const port = 6500;
 //const timeOut = process.env.timeout;
 const timeOut = 5000;
 

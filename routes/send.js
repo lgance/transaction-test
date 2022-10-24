@@ -11,7 +11,7 @@ const dgram = require('dgram');
 
 require('dotenv').config();
 
-const port = process.env.port;
+const port = 6500;
 const timeOut = parseInt(process.env.timeout);
 // 테스트 결과 서버로 전송 
 router.get('/',(req,res,next)=>{
