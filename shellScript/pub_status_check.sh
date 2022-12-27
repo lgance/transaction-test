@@ -17,8 +17,13 @@ echo "[Move to Project Path ${1}]"
 echo "[CHECKING FOR THIS SERVER Agent ${2} ] "
 
   if [[ "$STDOUT" == *${2}Agent* ]]; then
-        echo "찾음"
-        echo "${2} Server Status Success"
+	if [[ "$STDOUT" == *'pm2 save'* ]]; then
+	  echo "PM2 싱크를 맞춥니다. ",
+	  npm run save
+        else
+           echo "찾음"
+           echo "${2} Server Status Success"
+        fi
   else
         echo "못 찾음"
         echo "${2} Server Agent Restart"

@@ -15,6 +15,7 @@
     "log": "pm2 log 'serverNode6500Agent'",
     "close": "pm2 stop 'serverNode6500Agent' && pm2 delete 'serverNode6500Agent'",
     "flush": "pm2 flush",
+    "save":"pm2 save -force",
     "show": "pm2 show 'serverNode6500Agent'"
   },
   "repository": {
