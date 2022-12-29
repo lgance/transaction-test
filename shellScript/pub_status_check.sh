@@ -19,7 +19,10 @@ echo "[CHECKING FOR THIS SERVER Agent ${2} ] "
   if [[ "$STDOUT" == *${2}Agent* ]]; then
 	if [[ "$STDOUT" == *'pm2 save'* ]]; then
 	  echo "PM2 싱크를 맞춥니다. ",
-	  npm run save
+	  sudo npm run save
+	  sudo npm run start
+	  sudo npm run restart
+
         else
            echo "찾음"
            echo "${2} Server Status Success"
@@ -29,8 +32,9 @@ echo "[CHECKING FOR THIS SERVER Agent ${2} ] "
         echo "${2} Server Agent Restart"
         echo "RESTART AND START SERVER AGENT"
        # rm -rf /root/.pm2  - enable -> CPU 100% Memory 100% 
-        npm run start
-        npm run restart
+        sudo npm run save
+	sudo npm run start
+	sudo npm run restart
   fi
 
 }
